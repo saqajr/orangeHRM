@@ -1,0 +1,4 @@
+[INFO] 19-06-2026 21:19:37 [main] [com.orangehrm.Pages.LoginPage] - Click on Login Button
+[INFO] 19-06-2026 21:19:44 [main] [com.orangehrm.Pages.LoginPage] - Click on Login Button
+[INFO] 19-06-2026 21:19:50 [main] [com.orangehrm.Pages.LoginPage] - Click on Login Button
+[ERROR] 19-06-2026 21:19:56 [main] [com.orangehrm.Utils.AllureReports] - Failed to attach screenshot Could not write Allure attachment
