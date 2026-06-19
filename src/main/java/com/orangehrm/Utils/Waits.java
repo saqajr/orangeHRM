@@ -42,4 +42,8 @@ public class Waits {
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOf(locator));
     }
+
+    public static void sleepForDemo() {
+        try { Thread.sleep(500); } catch (InterruptedException ignored) {}
+    }
 }

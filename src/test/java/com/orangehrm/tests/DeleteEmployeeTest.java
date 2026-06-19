@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 
 import static com.orangehrm.Drivers.WebDriver.getDriver;
 import static com.orangehrm.Drivers.WebDriver.setupDriver;
+import static com.orangehrm.Utils.Waits.sleepForDemo;
 
 public class DeleteEmployeeTest {
 
@@ -63,6 +64,6 @@ public class DeleteEmployeeTest {
 
     @AfterMethod
     public void tearDown(){
+        sleepForDemo();
         getDriver().quit();
-    }
-}
+    }}

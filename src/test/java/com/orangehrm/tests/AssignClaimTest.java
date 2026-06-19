@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 
 import static com.orangehrm.Drivers.WebDriver.getDriver;
 import static com.orangehrm.Drivers.WebDriver.setupDriver;
+import static com.orangehrm.Utils.Waits.sleepForDemo;
 
 public class AssignClaimTest {
 
@@ -71,6 +72,7 @@ public class AssignClaimTest {
 
     @AfterMethod
     public void tearDown(){
+        sleepForDemo();
         getDriver().quit();
     }
 }

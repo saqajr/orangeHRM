@@ -15,8 +15,9 @@
         <aspectj.version>1.9.22</aspectj.version>
         <allure.version>2.24.0</allure.version>
     </properties>
+
     <build>
-        <directory> test-outputs/target</directory>
+        <directory>test-outputs/target</directory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -26,12 +27,14 @@
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
                 </configuration>
-
             </plugin>
         </plugins>
-
     </build>
+
     <!-- Source: https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
     <dependencies>
         <dependency>
@@ -89,7 +92,6 @@
         </dependency>
     </dependencies>
 
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -101,6 +103,5 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
 
 </project>

@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 
 import static com.orangehrm.Drivers.WebDriver.getDriver;
 import static com.orangehrm.Drivers.WebDriver.setupDriver;
+import static com.orangehrm.Utils.Waits.sleepForDemo;
 
 public class DeletePostTest {
     private final String LoginPageUrl = "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login";
@@ -47,7 +48,7 @@ public class DeletePostTest {
 
     @AfterMethod
     public void tearDown(){
+        sleepForDemo();
         getDriver().quit();
     }
-
 }
