@@ -2,9 +2,12 @@ package com.orangehrm.tests;
 
 import com.orangehrm.Pages.CreateEmployeePage;
 import com.orangehrm.Pages.LoginPage;
+import com.orangehrm.Utils.DataUtils;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.io.IOException;
 
 import static com.orangehrm.Drivers.WebDriver.getDriver;
 import static com.orangehrm.Drivers.WebDriver.setupDriver;
@@ -13,42 +16,60 @@ import static com.orangehrm.Utils.Waits.sleepForDemo;
 public class CreateEmployeeTest {
 
 
-    private final String CreateEmployeeUrl = "https://opensource-demo.orangehrmlive.com/web/index.php/pim/addEmployee";
-    private final String DashboardUrl = "https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index";
+    private final String CreateEmployeeUrl;
+    private final String DashboardUrl;
+    private final String BROWSER;
+    private final String LoginPageUrl;
+    private final String USERNAME;
+    private final String PASSWORD;
+    private final String FIRST_NAME;
+    private final String MIDDLE_NAME;
+    private final String LAST_NAME;
+
+    public CreateEmployeeTest() throws IOException {
+        CreateEmployeeUrl = DataUtils.getPropertyValue("environment", "createEmployeeUrl");
+        DashboardUrl = DataUtils.getPropertyValue("environment", "dashboardUrl");
+        BROWSER = DataUtils.getPropertyValue("environment", "browser");
+        LoginPageUrl = DataUtils.getPropertyValue("environment", "loginUrl");
+        USERNAME = DataUtils.getJsonData("validLogin", "username");
+        PASSWORD = DataUtils.getJsonData("validLogin", "password");
+        FIRST_NAME = DataUtils.getJsonData("employeeData", "firstName");
+        MIDDLE_NAME = DataUtils.getJsonData("employeeData", "middleName");
+        LAST_NAME = DataUtils.getJsonData("employeeData", "lastName");
+    }
 
     @Test
     public void testValidEmployeeCreation(){ // positive test case
 
         // login steps
-        new LoginPage(getDriver()).enterUsername("Admin").enterPassword("admin123").clickLoginButton().assertSuccessfulLogin(DashboardUrl);
+        new LoginPage(getDriver()).enterUsername(USERNAME).enterPassword(PASSWORD).clickLoginButton().assertSuccessfulLogin(DashboardUrl);
 
 
         // createEmployee
-        new CreateEmployeePage(getDriver()).goToAddEmployeePage(CreateEmployeeUrl).enterFirstName("mahmoud3").enterMiddleName("mohamed3")
-                .enterLastName("saqa3").saveEmployeeData().assertEmployeeCreationSuccessfully("viewPersonalDetails");
+        new CreateEmployeePage(getDriver()).goToAddEmployeePage(CreateEmployeeUrl).enterFirstName(FIRST_NAME).enterMiddleName(MIDDLE_NAME)
+                .enterLastName(LAST_NAME).saveEmployeeData().assertEmployeeCreationSuccessfully("viewPersonalDetails");
 
     }
 
     @Test
     public void createEmployeeWithMissingFirstName(){ // negative test case
         // login steps
-        new LoginPage(getDriver()).enterUsername("Admin").enterPassword("admin123").clickLoginButton().assertSuccessfulLogin(DashboardUrl);
+        new LoginPage(getDriver()).enterUsername(USERNAME).enterPassword(PASSWORD).clickLoginButton().assertSuccessfulLogin(DashboardUrl);
 
 
         // createEmployee ( negative )
         new CreateEmployeePage(getDriver()).goToAddEmployeePage(CreateEmployeeUrl)
-                .enterFirstName("").enterMiddleName("mohamed3").enterLastName("saqa3")
+                .enterFirstName("").enterMiddleName(MIDDLE_NAME).enterLastName(LAST_NAME)
                 .saveEmployeeData().assertFirstNameRequired();
 
     }
 
     @BeforeMethod
-    public void setUp(){
+    public void setUp() throws IOException {
         // setup driver
-        setupDriver("chrome");
+        setupDriver(BROWSER);
         //get driver
-        String loginUrl = "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login";
-        new LoginPage(getDriver()).navigateToLoginPage(loginUrl);
+        new LoginPage(getDriver()).navigateToLoginPage(LoginPageUrl);
     }
 
     @AfterMethod

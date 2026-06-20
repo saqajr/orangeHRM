@@ -1,14 +1,13 @@
 package com.orangehrm.tests;
 
 import com.orangehrm.Pages.LoginPage;
+import com.orangehrm.Utils.DataUtils;
 import com.orangehrm.Utils.ScreenShots;
-import org.openqa.selenium.PageLoadStrategy;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.safari.SafariDriver;
-import org.openqa.selenium.safari.SafariOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.io.IOException;
 
 import static com.orangehrm.Drivers.WebDriver.getDriver;
 import static com.orangehrm.Drivers.WebDriver.setupDriver;
@@ -16,13 +15,28 @@ import static com.orangehrm.Utils.Waits.sleepForDemo;
 
 public class LoginTest {
 
-    private final String LoginPageUrl = "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login";
-    private final String DashboardUrl = "https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index";
+    private final String LoginPageUrl;
+    private final String DashboardUrl;
+    private final String BROWSER;
+    private final String USERNAME;
+    private final String PASSWORD;
+    private final String INVALID_USERNAME;
+    private final String INVALID_PASSWORD;
+
+    public LoginTest() throws IOException {
+        LoginPageUrl = DataUtils.getPropertyValue("environment", "loginUrl");
+        DashboardUrl = DataUtils.getPropertyValue("environment", "dashboardUrl");
+        BROWSER = DataUtils.getPropertyValue("environment", "browser");
+        USERNAME = DataUtils.getJsonData("validLogin", "username");
+        PASSWORD = DataUtils.getJsonData("validLogin", "password");
+        INVALID_USERNAME = DataUtils.getJsonData("invalidLogin", "invalidUsername");
+        INVALID_PASSWORD = DataUtils.getJsonData("invalidLogin", "invalidPassword");
+    }
 
 
     @Test
     public void testValidLogin() throws InterruptedException { //positive case
-        new LoginPage(getDriver()).enterUsername("Admin").enterPassword("admin123")
+        new LoginPage(getDriver()).enterUsername(USERNAME).enterPassword(PASSWORD)
                 .clickLoginButton()
                 .assertSuccessfulLogin(DashboardUrl);
 
@@ -32,14 +46,14 @@ public class LoginTest {
 
     @Test
     public void testInvalidUsername() {  // new negative case
-        new LoginPage(getDriver()).enterUsername("Admin1").enterPassword("admin123")
+        new LoginPage(getDriver()).enterUsername(INVALID_USERNAME).enterPassword(PASSWORD)
                 .clickLoginButton()
                 .assertInvalidCredentials();
     }
 
     @Test
     public void testInvalidPassword() { // new negative case
-        new LoginPage(getDriver()).enterUsername("Admin").enterPassword("admin1234")
+        new LoginPage(getDriver()).enterUsername(USERNAME).enterPassword(INVALID_PASSWORD)
                 .clickLoginButton()
                 .assertInvalidCredentials();
     }
@@ -47,9 +61,9 @@ public class LoginTest {
 
     //configurations
     @BeforeMethod
-    public void setUp(){
+    public void setUp() throws IOException {
         // setup driver
-        setupDriver("chrome");
+        setupDriver(BROWSER);
         //get drive
         new LoginPage(getDriver()).navigateToLoginPage(LoginPageUrl);
     }
