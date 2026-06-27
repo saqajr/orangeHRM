@@ -12,7 +12,7 @@ public class DataUtils {
     public final static String TEST_DATA_PATH = "src/test/resources/testdata/";
 
 
-    //TODO: Read data from json file
+
     public static String getJsonData(String jsonFilename, String field) {
         try {
             // Define object of file Reader
@@ -27,7 +27,6 @@ public class DataUtils {
     }
 
 
-    //TODO: get properties from any .properties file
     public static String getPropertyValue(String fileName, String key) throws IOException {
         Properties properties = new Properties();
         properties.load(new FileInputStream(TEST_DATA_PATH + fileName + ".properties"));
